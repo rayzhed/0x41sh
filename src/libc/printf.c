@@ -7,9 +7,13 @@ int printf(const char *format, ...){
     int n = 0;
 
     while(*format != '\0'){
-        /* % est manger il faut fix pour qu'il soit afficher */
         if(*format == '%'){
             format++;
+            if (*format == '\0'){
+                putchar('%');
+                n++;
+                break;
+            }
             switch(*format++){
                 case 's':
                 {
@@ -32,12 +36,17 @@ int printf(const char *format, ...){
                     n++;
                     break;
                 }
+                case 'p':
+                {
+                    n += puthex((unsigned long) __builtin_va_arg(args, void *));
+                    break;
+                }
                 default:
                 {
-                    if(*format == '\0')
-                        break;
-                    else
-                        putchar(*format);
+                    putchar('%');
+                    putchar(*(format - 1));
+                    n += 2;
+                    break;
                 }
             }
 
