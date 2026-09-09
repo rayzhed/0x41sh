@@ -1,0 +1,12 @@
+#include "libc.h"
+
+[[noreturn]] void exit(int status){
+    __asm__ volatile (
+        "mov $60, %%rax\n"   // syscall: exit
+        "mov %0, %%rdi\n"   // status
+        "syscall\n"
+        :
+        : "r"((long)status)
+        : "rax", "rdi"
+    );
+}

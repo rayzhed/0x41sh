@@ -1,0 +1,6 @@
+# Objets et binaires générés
+build/
+*.o
+
+# Executable
+0x41sh
