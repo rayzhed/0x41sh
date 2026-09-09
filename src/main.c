@@ -3,13 +3,15 @@
 int main(int argc, char **argv, char **envp)
 {
 
-int x = 42;
-printf("adresse: %p\n", &x);
+void *a = malloc(30);
+void *b = malloc(50);
+void *c = malloc(100);
+printf("a=%p b=%p c=%p\n", a, b, c);
 
-printf("100%z fin\n");                    /* attendu : 100%z fin */
-printf("abc%");                           /* ne doit pas planter */
-printf("\n%d %s %c %p\n", 42, "test", 'X', &x);
-  
-
+t_header *cur = (t_header *)HEAP_START;
+while (cur != NULL) {
+    printf("bloc %p size=%d\n", (void *)cur, (int)cur->size);
+    cur = cur->next;
+}
   return 0;
 }

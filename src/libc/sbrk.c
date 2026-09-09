@@ -1,7 +1,17 @@
 #include "libc.h"
 
-size_t sbrk(int size){
-   size_t ret = brk(HEAP_END+size);
+void * sbrk(int size){
 
-   return ret;
+    void * v = brk (0);
+
+    void * vSize = (char *)v+size;
+
+    void * ret = brk(vSize);
+
+    printf("v=%p vSize=%p ret=%p\n", v, vSize, ret);
+
+    if(ret != vSize)
+        return (void *)-1;
+
+   return v;
 }

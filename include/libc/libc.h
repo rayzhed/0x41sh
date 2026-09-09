@@ -9,8 +9,8 @@ typedef long long ssize_t;
 
 struct header {
     size_t size;
-    struct header* next;
-    struct header* prev;
+    struct header *next;
+    struct header *prev;
     int isFree;
 };
 typedef struct header t_header;
@@ -41,8 +41,14 @@ ssize_t getline(char **lineptr, size_t *n, int fd);
 
 int printf(const char *format, ...);
 
-size_t brk(void *addr);
+void *brk(void *addr);
+
+void *sbrk(int size);
 
 void *malloc(size_t size);
+
+void free(void *ptr);
+
+void *realloc(void *ptr, size_t size);
 
 #endif
