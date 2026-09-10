@@ -42,6 +42,8 @@ int strcmp(const char *s1, const char *s2);
 
 int strncmp(const char *s1, const char *s2, size_t n);
 
+char *strncpy(char *dest, const char *src, size_t n);
+
 ssize_t read(int fd, void *buf, size_t count);
 
 ssize_t getline(char **lineptr, size_t *n, int fd);
