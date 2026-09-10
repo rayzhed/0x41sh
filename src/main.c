@@ -2,19 +2,35 @@
 
 int main(int argc, char **argv, char **envp)
 {
+  size_t size = 1024;
+  char *buffer = malloc(size);
+  if (buffer == NULL)
+    return 1;
+  ssize_t reader = 0;
 
-char *buf = malloc(10);
-buf[0] = 'A'; buf[1] = 'B'; buf[2] = 'C'; buf[3] = '\0';
-printf("avant: %s (%p)\n", buf, buf);
+  while (1){
+    
+    printf("zoubin/sh> ");
+    reader = getline(&buffer, &size, 0);
 
-buf = realloc(buf, 200);
-printf("apres: %s (%p)\n", buf, buf);   /* doit toujours afficher ABC */
+    if (reader <= 0)
+      exit(0);
 
-/* cas particuliers */
-void *x = realloc(NULL, 50);            /* = malloc */
-printf("realloc(NULL,50) = %p\n", x);
-void *y = realloc(x, 0);                /* = free */
-printf("realloc(x,0) = %p\n", y);       /* doit etre NULL */
+    if (buffer[reader - 1] == '\n')
+      buffer[reader - 1] = '\0';
+
+    if (strcmp(buffer, "exit") == 0){
+      exit(0);
+    }else if (strcmp(buffer, "help") == 0) {
+      printf("help - bah tu viens de faire la commande quoi\necho <texte> - c'est un perroquet :}\nexit - essaye pour voir ?\n");
+    } else if (strncmp(buffer, "echo ", 5) == 0){
+      printf("[%s] strncmp=%d\n", buffer, strncmp(buffer, "echo ", 5));
+      printf("%s\n", buffer+5);
+    } else {
+      printf("commande inconnue. stp fait un effort t'a toute les commandes dans help..\n");
+    }
+
+  }
 
   return 0;
 }

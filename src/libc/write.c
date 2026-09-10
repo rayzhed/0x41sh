@@ -3,10 +3,10 @@
 ssize_t write(int fd, const void *str, size_t len) {
     long ret;
     __asm__ volatile (
-        "mov $1, %%rax\n"   // syscall: write hello
         "mov %1, %%rdi\n"   // fd
         "mov %2, %%rsi\n"   // str
         "mov %3, %%rdx\n"   // len
+        "mov $1, %%rax\n"   // write
         "syscall\n"
         : "=a"(ret)
         : "r"((long)fd), "r"(str), "r"(len)

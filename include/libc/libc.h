@@ -4,8 +4,17 @@
 
 #define NULL ((void *)0)
 
+//help: flags for open
+#define O_RDONLY  0
+#define O_WRONLY  1
+#define O_RDWR    2
+#define O_CREAT   00000100
+#define O_TRUNC   00001000
+#define O_APPEND  00002000
+
 typedef unsigned long long size_t;
 typedef long long ssize_t;
+typedef unsigned int umode_t;
 
 struct header {
     size_t size;
@@ -52,5 +61,9 @@ void free(void *ptr);
 void *realloc(void *ptr, size_t size);
 
 void *memcpy(void *dest, const void *src, size_t n);
+
+int open(const char *filename, int flags, umode_t mode);
+
+int close(int fd);
 
 #endif
