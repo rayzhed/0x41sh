@@ -195,3 +195,23 @@ void vault_free(t_vault *vault){
     vault->count=0;
     vault->capacity=0;
 }
+
+int vault_del(t_vault *vault, const char *name){
+    size_t i = 0;
+    size_t j = 0;
+
+    while (i < vault->count){
+        if (strcmp(name, vault->entries[i].name) == 0) {
+            j = i;
+            while (j < vault->count - 1) {
+                vault->entries[j] = vault->entries[j + 1];
+                j++;
+            }
+            vault->count--;
+            return 0;
+        }
+        i++;
+    }
+
+    return -1;
+}

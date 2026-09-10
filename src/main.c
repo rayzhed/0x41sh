@@ -37,7 +37,7 @@ int main(int argc, char **argv, char **envp)
  |_|\_\___|\__, |_|   \__,_|___/___/\___|_|   \__,_|___/
             __/ |                                       
            |___/                                        */
-  printf("  _  __          _____                   _____          \n | |/ /         |  __ \\                 |  __ \\         \n | ' / ___ _   _| |__) |_ _ ___ ___  ___| |__) |_ _ ___ \n |  < / _ \\ | | |  ___/ _` / __/ __|/ _ \\  ___/ _` / __|\n | . \\  __/ |_| | |  | (_| \\__ \\__ \\  __/ |  | (_| \\__ \\\n |_|\\_\\___|\\__, |_|   \\__,_|___/___/\\___|_|   \\__,_|___/\n            __/ |                                       \n           |___/                                        v1.0\n\n\n\n\n");
+  printf("  _  __          _____                   _____          \n | |/ /         |  __ \\                 |  __ \\         \n | ' / ___ _   _| |__) |_ _ ___ ___  ___| |__) |_ _ ___ \n |  < / _ \\ | | |  ___/ _` / __/ __|/ _ \\  ___/ _` / __|\n | . \\  __/ |_| | |  | (_| \\__ \\__ \\  __/ |  | (_| \\__ \\\n |_|\\_\\___|\\__, |_|   \\__,_|___/___/\\___|_|   \\__,_|___/\n            __/ |                                       \n           |___/                                        v1.1\n\n\n\n\n");
   char master[64];
 
   printf("(n'essaye pas de brute-force sinon je vais le dire aux adultes)\nMaster password: ");
@@ -67,6 +67,7 @@ int main(int argc, char **argv, char **envp)
       printf("je met tout dans mon sac bye bye !");
       if (vault_save(&v, "vault.db", master) < 0)
         printf("ouuups j'ai fait tomber le sac.. tes zoubicreds sont perdus :((\n");
+      vault_free(&v);
       exit(0);
     }
 
@@ -77,11 +78,11 @@ int main(int argc, char **argv, char **envp)
       printf("je met tout dans mon sac bye bye !");
       if (vault_save(&v, "vault.db", master) < 0)
         printf("ouuups j'ai fait tomber le sac.. tes zoubicreds sont perdus :((\n");
+      vault_free(&v);
       exit(0);
     }else if (strcmp(buffer, "help") == 0) {
-      printf("help - bah tu viens de faire la commande quoi\nsave - TRES IMPORTANT SI TU SAVE PAS J'OUBLIE TOUT ORH !1!1!\nadd - si tu veut me donner tes zoubicreds :}\nlist - Pour afficher tout tes zoubicreds que je te cache au chaud hehe\necho <texte> - c'est un perroquet :}\nexit - essaye pour voir ?\n");
+      printf("help - bah tu viens de faire la commande quoi\nsave - TRES IMPORTANT SI TU SAVE PAS J'OUBLIE TOUT ORH !1!1!\nget - dit moi quoi chercher et je te montre un de tes jolis zoubicreeeeeds\nadd - si tu veut me donner tes zoubicreds :}\ndel - si ta besoin que je supprime un de tes zoubicreds appel moi !\nlist - Pour afficher tout tes zoubicreds que je te cache au chaud hehe\necho <texte> - c'est un perroquet :}\nclear - salut je suis le nettoyeur mon boulot est de.. nettoyer ton.. terminal !\nexit - essaye pour voir ?\n");
     } else if (strncmp(buffer, "echo ", 5) == 0){
-      printf("[%s] strncmp=%d\n", buffer, strncmp(buffer, "echo ", 5));
       printf("%s\n", buffer+5);
     } else if(strcmp(buffer, "clear") == 0) {
       printf("\033[2J");
@@ -107,6 +108,11 @@ int main(int argc, char **argv, char **envp)
             else
                 printf("et voili voilou, je vais cacher sa !\n");
         }
+    } else if (strncmp(buffer, "del ", 4) == 0) {
+        if (vault_del(&v, buffer + 4) < 0)
+            printf("hum je trouve pas ce truc moi..\n");
+        else
+            printf("et pouf c'est jeter dans la laaaave sa bruuule !!\n");
     } else if (strncmp(buffer, "get ", 4) == 0) {
         t_entry *e = vault_get(&v, buffer+4);
         if (e == NULL)
