@@ -187,10 +187,10 @@ int vault_load(t_vault *vault, const char *filename, const char *master) {
 }
 
 void vault_free(t_vault *vault){
-    t_vault *v = vault;
     if (vault->entries == NULL)
         return;
     free(vault->entries);
+    vault->entries=NULL;
     vault->count=0;
     vault->capacity=0;
 }
