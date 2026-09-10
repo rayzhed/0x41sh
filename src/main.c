@@ -20,6 +20,8 @@ static int read_line(const char *prompt, char *dest, size_t max, char *buffer, s
 
 int main(int argc, char **argv, char **envp)
 {
+  (void)argc; (void)argv; (void)envp;
+
   size_t size = 1024;
   char *buffer = malloc(size);
   if (buffer == NULL)
@@ -49,6 +51,10 @@ int main(int argc, char **argv, char **envp)
   int r = vault_load(&v, "vault.db", master);
   if (r == -2) {
       printf("zoubin/sh il veut pas :{\n");
+      exit(1);
+  }
+  if (r == -1) {
+      printf("ton vault.db est tout casse, je prefere pas l'ouvrir sinon je vais ecraser ce qui reste dedans :{\n");
       exit(1);
   }
   
