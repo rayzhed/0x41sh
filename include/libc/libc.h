@@ -66,6 +66,8 @@ void *memcpy(void *dest, const void *src, size_t n);
 
 int open(const char *filename, int flags, umode_t mode);
 
+int rename(const char *oldpath, const char *newpath);
+
 int close(int fd);
 
 size_t strlen(const char *s);

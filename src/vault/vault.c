@@ -68,7 +68,17 @@ t_entry *vault_get(t_vault *vault, const char *name){
 }
 
 int vault_save(t_vault *vault, const char *filename, const char *master) {
-    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+    /*on ecrit a cote, on remplace l'ancien coffre qu'une fois tout ecrit*/
+    char tmp[128];
+    size_t len = strlen(filename);
+
+    if (len > sizeof(tmp) - 5)
+        return -1;
+
+    memcpy(tmp, filename, len);
+    memcpy(tmp + len, ".tmp", 5);
+
+    int fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 
     if (fd < 0)
         return -1;
@@ -107,6 +117,9 @@ int vault_save(t_vault *vault, const char *filename, const char *master) {
     }
 
     close(fd);
+
+    if (rename(tmp, filename) < 0)
+        return -1;
 
     return 0;
 }
