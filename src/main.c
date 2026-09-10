@@ -9,7 +9,7 @@ int main(int argc, char **argv, char **envp)
   ssize_t reader = 0;
 
   while (1){
-    
+
     printf("zoubin/sh> ");
     reader = getline(&buffer, &size, 0);
 
@@ -26,6 +26,8 @@ int main(int argc, char **argv, char **envp)
     } else if (strncmp(buffer, "echo ", 5) == 0){
       printf("[%s] strncmp=%d\n", buffer, strncmp(buffer, "echo ", 5));
       printf("%s\n", buffer+5);
+    } else if(strcmp(buffer, "clear") == 0) {
+      printf("\033[2J");
     } else {
       printf("commande inconnue. stp fait un effort t'a toute les commandes dans help..\n");
     }
