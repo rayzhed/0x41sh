@@ -68,4 +68,6 @@ int close(int fd);
 
 size_t strlen(const char *s);
 
+void xtea(void *data, size_t size, const char *password, int decrypt);
+
 #endif

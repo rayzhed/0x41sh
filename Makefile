@@ -10,15 +10,19 @@ VAULT_OBJS = $(patsubst src/vault/%.c, build/src/vault/%.o, $(VAULT_SRCS))
 	ld -e _start -o 0x41sh $(OBJS)
 
 build/crt0.o: crt0.asm
+	mkdir -p $(@D)
 	nasm -f elf64 crt0.asm -o build/crt0.o
 
 build/src/main.o: src/main.c
+	mkdir -p $(@D)
 	gcc -c -Iinclude/libc -Iinclude -fno-stack-protector src/main.c -o build/src/main.o
 
 build/src/libc/%.o: src/libc/%.c
+	mkdir -p $(@D)
 	gcc -c -fno-stack-protector -Iinclude/libc -Iinclude $< -o $@
 
 build/src/vault/%.o: src/vault/%.c
+	mkdir -p $(@D)
 	gcc -c -fno-stack-protector -Iinclude/libc -Iinclude $< -o $@
 
 clean:
@@ -30,4 +34,3 @@ fclean: clean
 re: fclean 0x41sh
 
 .PHONY: clean fclean re
-
