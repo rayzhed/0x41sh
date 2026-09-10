@@ -180,6 +180,12 @@ int vault_load(t_vault *vault, const char *filename, const char *master) {
 
     vault->count = count;
 
+    /*le buffer est plein de mots de passe en clair, on le nettoie avant de le rendre*/
+    size_t z = 0;
+
+    while (z < total)
+        buf[z++] = 0;
+
     free(buf);
 
     close(fd);

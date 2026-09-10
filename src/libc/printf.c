@@ -36,6 +36,12 @@ int printf(const char *format, ...){
                     n++;
                     break;
                 }
+                case '%':
+                {
+                    putchar('%');
+                    n++;
+                    break;
+                }
                 case 'p':
                 {
                     n += puthex((unsigned long) __builtin_va_arg(args, void *));

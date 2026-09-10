@@ -57,6 +57,15 @@ int main(int argc, char **argv, char **envp)
       printf("ton vault.db est tout casse, je prefere pas l'ouvrir sinon je vais ecraser ce qui reste dedans :{\n");
       exit(1);
   }
+  if (r == -3) {
+      char verif[64];
+
+      if (read_line("c'est ton premier zoubicoffre, retape ton mot de passe pour etre sur: ", verif, 64, buffer, size) < 0
+      || strcmp(master, verif) != 0) {
+          printf("c'est pas le meme, on recommence, jvais pas t'enfermer dehors :{\n");
+          exit(1);
+      }
+  }
   
   while (1){
 
