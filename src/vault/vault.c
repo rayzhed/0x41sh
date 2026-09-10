@@ -190,6 +190,7 @@ void vault_free(t_vault *vault){
     if (vault->entries == NULL)
         return;
     free(vault->entries);
+    vault->entries=NULL;
     vault->count=0;
     vault->capacity=0;
     vault->entries=NULL;

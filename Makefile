@@ -15,15 +15,15 @@ build/crt0.o: crt0.asm
 
 build/src/main.o: src/main.c
 	mkdir -p $(@D)
-	gcc -c -Iinclude/libc -Iinclude -fno-stack-protector src/main.c -o build/src/main.o
+	gcc -c -Wall -Wextra -Iinclude/libc -Iinclude -fno-stack-protector src/main.c -o build/src/main.o
 
 build/src/libc/%.o: src/libc/%.c
 	mkdir -p $(@D)
-	gcc -c -fno-stack-protector -Iinclude/libc -Iinclude $< -o $@
+	gcc -c -Wall -Wextra -fno-stack-protector -Iinclude/libc -Iinclude $< -o $@
 
 build/src/vault/%.o: src/vault/%.c
 	mkdir -p $(@D)
-	gcc -c -fno-stack-protector -Iinclude/libc -Iinclude $< -o $@
+	gcc -c -Wall -Wextra -fno-stack-protector -Iinclude/libc -Iinclude $< -o $@
 
 clean:
 	rm -f $(OBJS)
