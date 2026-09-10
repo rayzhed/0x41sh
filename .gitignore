@@ -4,3 +4,6 @@ build/
 
 # Executable
 0x41sh
+
+# Le coffre
+vault.db

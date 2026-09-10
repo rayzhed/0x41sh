@@ -126,6 +126,12 @@ int vault_load(t_vault *vault, const char *filename, const char *master) {
         return -1;
     }
 
+    /*count sort du fichier, on lui fait pas confiance*/
+    if (count > 100000) {
+        close(fd);
+        return -1;
+    }
+
     size_t size = count * sizeof(t_entry);
     size_t total = sizeof(unsigned long long) + size;
     unsigned char *buf = malloc(total);
