@@ -81,22 +81,27 @@ int vault_save(t_vault *vault, const char *filename, const char *master) {
     }
 
     size_t size = vault->count * sizeof(t_entry);
-    t_entry *copy = malloc(size);
+    size_t total = sizeof(unsigned long long) + size;
+    unsigned char *copy = malloc(total);
 
     if (copy == NULL) {
         close(fd);
         return -1;
     }
 
-    memcpy(copy, vault->entries, size);
+    /*le canari passe devant, comme ça il est chiffré avec le reste*/
+    unsigned long long canary = CANARY;
 
-    xtea(copy, size, master, 0);
+    memcpy(copy, &canary, sizeof(canary));
+    memcpy(copy + sizeof(canary), vault->entries, size);
 
-    n = write(fd, copy, size);
+    xtea(copy, total, master, 0);
+
+    n = write(fd, copy, total);
 
     free(copy);
 
-    if (n != (ssize_t)size) {
+    if (n != (ssize_t)total) {
         close(fd);
         return -1;
     }
@@ -121,10 +126,41 @@ int vault_load(t_vault *vault, const char *filename, const char *master) {
         return -1;
     }
 
+    size_t size = count * sizeof(t_entry);
+    size_t total = sizeof(unsigned long long) + size;
+    unsigned char *buf = malloc(total);
+
+    if (buf == NULL) {
+        close(fd);
+        return -1;
+    }
+
+    n = read(fd, buf, total);
+
+    if (n != (ssize_t)total) {
+        free(buf);
+        close(fd);
+        return -1;
+    }
+
+    xtea(buf, total, master, 1);
+
+    /*canari cassé = mauvais master :{*/
+    unsigned long long canary;
+
+    memcpy(&canary, buf, sizeof(canary));
+
+    if (canary != CANARY) {
+        free(buf);
+        close(fd);
+        return -2;
+    }
+
     if (count > vault->capacity){
-        t_entry *tmp = realloc(vault->entries, count * sizeof(t_entry));
+        t_entry *tmp = realloc(vault->entries, size);
 
         if (tmp == NULL){
+            free(buf);
             close(fd);
             return -1;
         }
@@ -133,16 +169,11 @@ int vault_load(t_vault *vault, const char *filename, const char *master) {
         vault->capacity = count;
     }
 
-    n = read(fd, vault->entries, count * sizeof(t_entry));
-
-    if (n != (ssize_t)(count * sizeof(t_entry))) {
-        close(fd);
-        return -1;
-    }
-
-    xtea(vault->entries, count * sizeof(t_entry), master, 1);
+    memcpy(vault->entries, buf + sizeof(canary), size);
 
     vault->count = count;
+
+    free(buf);
 
     close(fd);
 

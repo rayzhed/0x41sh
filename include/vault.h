@@ -4,6 +4,7 @@
 
 #define MAX_LEN 64
 #define VAULT_INITIAL_CAPACITY 8
+#define CANARY 0x3078343153482121ULL /* "0x41SH!!" */
 
 struct entry {
     char name[MAX_LEN];
