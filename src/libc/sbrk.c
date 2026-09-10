@@ -8,7 +8,7 @@ void * sbrk(int size){
 
     void * ret = brk(vSize);
 
-    printf("v=%p vSize=%p ret=%p\n", v, vSize, ret);
+    // some debug printf("v=%p vSize=%p ret=%p\n", v, vSize, ret);
 
     if(ret != vSize)
         return (void *)-1;

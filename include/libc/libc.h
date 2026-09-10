@@ -66,4 +66,6 @@ int open(const char *filename, int flags, umode_t mode);
 
 int close(int fd);
 
+size_t strlen(const char *s);
+
 #endif

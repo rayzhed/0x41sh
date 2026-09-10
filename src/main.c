@@ -1,4 +1,5 @@
 #include "libc.h"
+#include "vault.h"
 
 int main(int argc, char **argv, char **envp)
 {
@@ -8,7 +9,7 @@ int main(int argc, char **argv, char **envp)
     return 1;
   ssize_t reader = 0;
 
-  while (1){
+  /*while (1){
 
     printf("zoubin/sh> ");
     reader = getline(&buffer, &size, 0);
@@ -32,7 +33,23 @@ int main(int argc, char **argv, char **envp)
       printf("commande inconnue. stp fait un effort t'a toute les commandes dans help..\n");
     }
 
+  }*/
+
+  t_vault v;
+  vault_init(&v);
+  vault_add(&v, "github.com", "rayzhed", "pass1");
+  vault_add(&v, "gmail.com", "moi", "pass2");
+  vault_save(&v, "vault.db");
+  puts("sauvegarde");
+
+  t_vault v2;
+  vault_init(&v2);
+  if (vault_load(&v2, "vault.db") < 0) {
+      puts("erreur chargement");
+      return 1;
   }
+  puts("charge :");
+  vault_list(&v2);
 
   return 0;
 }
