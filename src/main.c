@@ -35,16 +35,18 @@ int main(int argc, char **argv, char **envp)
 
   }*/
 
+  char *master = "amine";
+
   t_vault v;
   vault_init(&v);
   vault_add(&v, "github.com", "rayzhed", "pass1");
   vault_add(&v, "gmail.com", "moi", "pass2");
-  vault_save(&v, "vault.db");
+  vault_save(&v, "vault.db", master);
   puts("sauvegarde");
 
   t_vault v2;
   vault_init(&v2);
-  if (vault_load(&v2, "vault.db") < 0) {
+  if (vault_load(&v2, "vault.db", master) < 0) {
       puts("erreur chargement");
       return 1;
   }

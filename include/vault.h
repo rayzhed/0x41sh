@@ -27,9 +27,10 @@ void vault_list(t_vault *vault);
 
 t_entry *vault_get(t_vault *vault, const char *name);
 
-int vault_save(t_vault *vault, const char *filename);
 
-int vault_load(t_vault *vault, const char *filename);
+int vault_save(t_vault *vault, const char *filename, const char *master);
+
+int vault_load(t_vault *vault, const char *filename, const char *master);
 
 void vault_free(t_vault *vault);
 
