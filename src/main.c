@@ -75,7 +75,7 @@ int main(int argc, char **argv, char **envp)
       vault_free(&v);
       exit(0);
     }else if (strcmp(buffer, "help") == 0) {
-      printf("help - bah tu viens de faire la commande quoi\nsave - TRES IMPORTANT SI TU SAVE PAS J'OUBLIE TOUT ORH !1!1!\nget - dit moi quoi chercher et je te montre un de tes jolis zoubicreeeeeds\nadd - si tu veut me donner tes zoubicreds :}\ndel - si ta besoin que je supprime un de tes zoubicreds appel moi !\nlist - Pour afficher tout tes zoubicreds que je te cache au chaud hehe\necho <texte> - c'est un perroquet :}\nclear - salut je suis le nettoyeur mon boulot est de.. nettoyer ton.. terminal !\nexit - essaye pour voir ?\n");
+      printf("help - bah tu viens de faire la commande quoi\nsave - TRES IMPORTANT SI TU SAVE PAS J'OUBLIE TOUT ORH !1!1!\nget - dit moi quoi chercher et je te montre un de tes jolis zoubicreeeeeds\nadd - si tu veut me donner tes zoubicreds :}\ndel - si ta besoin que je supprime un de tes zoubicreds appel moi !\nlist - Pour afficher tout tes zoubicreds que je te cache au chaud hehe\ngen - si tu cherche un zoubicreds je peut t'inspirer !\necho <texte> - c'est un perroquet :}\nclear - salut je suis le nettoyeur mon boulot est de.. nettoyer ton.. terminal !\nexit - essaye pour voir ?\n");
     } else if (strncmp(buffer, "echo ", 5) == 0){
       printf("%s\n", buffer+5);
     } else if(strcmp(buffer, "clear") == 0) {
@@ -114,12 +114,18 @@ int main(int argc, char **argv, char **envp)
         else
           printf("ton zoubiname c'est %s et ton zoubicreds c'est > %s < chuuuut faut pas dire que jte l'ai dit c'est un secret..\n", e->user, e->password);
 
+    } else if (strcmp(buffer, "gen") == 0) {
+      char pass[MAX_LEN];
+      if (generate_password(pass, 20) < 0)
+          printf("eh j'ai trouver.. oups on dirait que la feuille est.. vide ?\n");
+      else
+          printf("eh j'ai trouver une feuille par terre regarde : %s\n", pass);
     } else {
       printf("commande inconnue. stp fait un effort t'a toute les commandes dans help..\n");
     }
 
   }
-
+ 
 
   return 0;
 }

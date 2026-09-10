@@ -1,9 +1,9 @@
 SRCS = $(wildcard src/libc/*.c)
 LIBC_OBJS = $(patsubst src/libc/%.c, build/src/libc/%.o, $(SRCS))
-OBJS = build/crt0.o build/src/main.o $(LIBC_OBJS) $(VAULT_OBJS)
+OBJS = build/crt0.o build/src/main.o $(LIBC_OBJS) $(LIB_OBJS)
 
-VAULT_SRCS = $(wildcard src/vault/*.c)
-VAULT_OBJS = $(patsubst src/vault/%.c, build/src/vault/%.o, $(VAULT_SRCS))
+LIB_SRCS = $(wildcard src/lib/*.c)
+LIB_OBJS = $(patsubst src/lib/%.c, build/src/lib/%.o, $(LIB_SRCS))
 
 
 0x41sh: $(OBJS)
@@ -21,7 +21,7 @@ build/src/libc/%.o: src/libc/%.c
 	mkdir -p $(@D)
 	gcc -c -Wall -Wextra -fno-stack-protector -Iinclude/libc -Iinclude $< -o $@
 
-build/src/vault/%.o: src/vault/%.c
+build/src/lib/%.o: src/lib/%.c
 	mkdir -p $(@D)
 	gcc -c -Wall -Wextra -fno-stack-protector -Iinclude/libc -Iinclude $< -o $@
 

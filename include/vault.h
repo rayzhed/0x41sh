@@ -37,4 +37,6 @@ void vault_free(t_vault *vault);
 
 int vault_del(t_vault *vault, const char *name);
 
+int generate_password(char *dest, size_t len);
+
 #endif

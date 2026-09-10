@@ -215,3 +215,30 @@ int vault_del(t_vault *vault, const char *name){
 
     return -1;
 }
+
+int generate_password(char *dest, size_t len){
+
+  unsigned char *buffer = malloc(len);
+  if (buffer == NULL) return -1;
+
+  char *ch = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
+  size_t n_ch = strlen(ch);
+
+  int fd = open("/dev/urandom", O_RDONLY, 0);
+  if (fd < 0) { free(buffer); return -1; }
+
+  ssize_t n = read(fd, buffer, len);
+  if (n != (ssize_t)len) { free(buffer); close(fd); return -1; }
+
+  size_t i = 0;
+  while (i < len) {
+      dest[i] = ch[buffer[i] % n_ch];
+      i++;
+  }
+  dest[len] = '\0';
+
+  free(buffer);
+  close(fd);
+  return 0;
+
+}
