@@ -117,9 +117,18 @@ int vault_load(t_vault *vault, const char *filename){
         close(fd);
         return -1;
     }
-    
+
     vault->count=count;
 
     close(fd);
     return 0;
+}
+
+void vault_free(t_vault *vault){
+    t_vault *v = vault;
+    if (vault->entries == NULL)
+        return;
+    free(vault->entries);
+    vault->count=0;
+    vault->capacity=0;
 }

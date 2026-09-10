@@ -31,4 +31,6 @@ int vault_save(t_vault *vault, const char *filename);
 
 int vault_load(t_vault *vault, const char *filename);
 
+void vault_free(t_vault *vault);
+
 #endif
