@@ -35,4 +35,6 @@ int vault_load(t_vault *vault, const char *filename, const char *master);
 
 void vault_free(t_vault *vault);
 
+int vault_del(t_vault *vault, const char *name);
+
 #endif

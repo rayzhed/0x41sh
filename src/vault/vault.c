@@ -187,10 +187,30 @@ int vault_load(t_vault *vault, const char *filename, const char *master) {
 }
 
 void vault_free(t_vault *vault){
-    t_vault *v = vault;
     if (vault->entries == NULL)
         return;
     free(vault->entries);
     vault->count=0;
     vault->capacity=0;
+    vault->entries=NULL;
+}
+
+int vault_del(t_vault *vault, const char *name){
+    size_t i = 0;
+    size_t j = 0;
+
+    while (i < vault->count){
+        if (strcmp(name, vault->entries[i].name) == 0) {
+            j = i;
+            while (j < vault->count - 1) {
+                vault->entries[j] = vault->entries[j + 1];
+                j++;
+            }
+            vault->count--;
+            return 0;
+        }
+        i++;
+    }
+
+    return -1;
 }
