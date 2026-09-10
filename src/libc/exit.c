@@ -9,4 +9,5 @@
         : "r"((long)status)
         : "rax", "rdi"
     );
+    __builtin_unreachable();
 }

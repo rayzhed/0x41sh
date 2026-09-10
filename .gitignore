@@ -7,3 +7,4 @@ build/
 
 # Le coffre
 vault.db
+vault.db.tmp

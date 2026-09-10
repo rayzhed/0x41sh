@@ -68,7 +68,17 @@ t_entry *vault_get(t_vault *vault, const char *name){
 }
 
 int vault_save(t_vault *vault, const char *filename, const char *master) {
-    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+    /*on ecrit a cote, on remplace l'ancien coffre qu'une fois tout ecrit*/
+    char tmp[128];
+    size_t len = strlen(filename);
+
+    if (len > sizeof(tmp) - 5)
+        return -1;
+
+    memcpy(tmp, filename, len);
+    memcpy(tmp + len, ".tmp", 5);
+
+    int fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 
     if (fd < 0)
         return -1;
@@ -108,14 +118,18 @@ int vault_save(t_vault *vault, const char *filename, const char *master) {
 
     close(fd);
 
+    if (rename(tmp, filename) < 0)
+        return -1;
+
     return 0;
 }
 
 int vault_load(t_vault *vault, const char *filename, const char *master) {
     int fd = open(filename, O_RDONLY, 0);
 
+    /*-3 = y'a pas de fichier (1er lancement), -1 = y'en a un mais il est casse*/
     if (fd < 0)
-        return -1;
+        return -3;
 
     size_t count;
 
@@ -179,6 +193,12 @@ int vault_load(t_vault *vault, const char *filename, const char *master) {
 
     vault->count = count;
 
+    /*le buffer est plein de mots de passe en clair, on le nettoie avant de le rendre*/
+    size_t z = 0;
+
+    while (z < total)
+        buf[z++] = 0;
+
     free(buf);
 
     close(fd);
@@ -193,7 +213,6 @@ void vault_free(t_vault *vault){
     vault->entries=NULL;
     vault->count=0;
     vault->capacity=0;
-    vault->entries=NULL;
 }
 
 int vault_del(t_vault *vault, const char *name){
